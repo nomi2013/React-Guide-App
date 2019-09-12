@@ -13,7 +13,10 @@ export default function App() {
   const [courseGoal, setCourseGoal] = useState([]);
 
   const btnHandler = () => {
-    setCourseGoal(currentGoals => [...courseGoal, enteredGoal]);
+    setCourseGoal(currentGoals => [
+      ...courseGoal,
+      { key: Math.random().toString(), value: enteredGoal }
+    ]);
     console.log(courseGoal);
   };
 
@@ -34,14 +37,13 @@ export default function App() {
       </View>
       <View>
         <FlatList
+          keyExtractor={(item, index) => item.key}
           data={courseGoal}
-          renderItem={itemData =>
-            courseGoal.map(goal => (
-              <View style={styles.listItem}>
-                <Text>{goal}</Text>
-              </View>
-            ))
-          }
+          renderItem={itemData => (
+            <View style={styles.listItem}>
+              <Text>{itemData.item.value}</Text>
+            </View>
+          )}
         />
       </View>
     </View>
