@@ -8,40 +8,28 @@ import {
   FlatList
 } from "react-native";
 
-import GoalItem from './components/GoalItem';
+import GoalItem from "./components/GoalItem";
+import GoalInput from "./components/GoalInput";
+
 
 export default function App() {
-  const [enteredGoal, setEnteredGoal] = useState("");
   const [courseGoal, setCourseGoal] = useState([]);
 
-  const btnHandler = () => {
+   const btnHandler = goalTitle => {
     setCourseGoal(currentGoals => [
-      ...courseGoal,
-      { key: Math.random().toString(), value: enteredGoal }
+      ...currentGoals,
+      { key: Math.random().toString(), value: goalTitle }
     ]);
-    console.log(courseGoal);
-  };
-
-  const goalHandler = enteredText => {
-    setEnteredGoal(enteredText);
   };
 
   return (
     <View style={styles.screen}>
-      <View style={styles.conatiner}>
-        <TextInput
-          placeholder="Course Goal"
-          style={styles.textInputContainer}
-          onChangeText={goalHandler}
-          value={enteredGoal}
-        />
-        <Button title="ADD" onPress={btnHandler} />
-      </View>
+      <GoalInput onAddGoal = {btnHandler}/>
       <View>
         <FlatList
           keyExtractor={(item, index) => item.key}
           data={courseGoal}
-          renderItem={itemData => <GoalItem title = {itemData.item.value}/>}
+          renderItem={itemData => <GoalItem title={itemData.item.value} />}
         />
       </View>
     </View>
@@ -51,16 +39,5 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     padding: 50
-  },
-  conatiner: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  textInputContainer: {
-    width: "80%",
-    borderColor: "black",
-    borderWidth: 1,
-    padding: 10
   }
 });
